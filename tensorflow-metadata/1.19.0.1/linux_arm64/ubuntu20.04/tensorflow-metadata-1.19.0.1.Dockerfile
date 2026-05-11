@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 ARG TARGET=tensorflow-metadata
-ARG BASE_IMAGE=cuda-12.8-toolchain:ubuntu20.04
+ARG BASE_IMAGE=cuda-12.8-toolchain:ubuntu20.04-arm64
     
 # Use the CUDA 12.8 runtime image (for TensorFlow) (cuda-12.8-toolchain-ubuntu20.04.Dockerfile)
 # to greatly speed up build time.

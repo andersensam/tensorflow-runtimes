@@ -3,7 +3,7 @@
 ARG TARGET=tensorflow-text
 ARG BASE_IMAGE=cuda-12.8-toolchain:ubuntu20.04
     
-# Use the TensorFlow Runtime image (tensorflow-runtime-ubuntu20.04.Dockerfile)
+# Use the CUDA 12.8 runtime image (for TensorFlow) (cuda-12.8-toolchain-ubuntu20.04.Dockerfile)
 # to greatly speed up build time.
 FROM ${BASE_IMAGE} AS tensorflow-text-build
 

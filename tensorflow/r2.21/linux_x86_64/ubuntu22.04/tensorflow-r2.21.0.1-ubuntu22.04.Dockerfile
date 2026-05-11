@@ -3,7 +3,7 @@
 ARG TARGET=tensorflow
 ARG BASE_IMAGE=cuda-12.8-toolchain:ubuntu22.04
     
-# Use the TensorFlow Runtime image (tensorflow-runtime-ubuntu22.04.Dockerfile)
+# Use the CUDA 12.8 runtime image (for TensorFlow) (cuda-12.8-toolchain-ubuntu22.04.Dockerfile)
 # to greatly speed up build time.
 FROM ${BASE_IMAGE} AS build
 
