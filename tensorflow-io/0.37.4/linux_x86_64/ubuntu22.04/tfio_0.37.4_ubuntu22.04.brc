@@ -1,0 +1,30 @@
+build --copt="-fvisibility=hidden"
+build --copt="-D_GLIBCXX_USE_CXX11_ABI=1"
+build --copt="-DEIGEN_MAX_ALIGN_BYTES=64"
+build --action_env TF_HEADER_DIR="/opt/venv/lib/python3.12/site-packages/tensorflow/include"
+build --action_env TF_SHARED_LIBRARY_DIR="/opt/venv/lib/python3.12/site-packages/tensorflow"
+build --action_env TF_SHARED_LIBRARY_NAME="libtensorflow_framework.so.2"
+build --cxxopt="-std=c++17"
+build --experimental_repo_remote_exec
+build --enable_platform_specific_config
+build:macos --copt="-DGRPC_BAZEL_BUILD"
+build:macos --copt="-D_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION"
+build:macos --copt="--target=x86_64-apple-macosx12.1"
+build:macos --linkopt="--target=x86_64-apple-macosx12.1"
+build:macos --copt=-Wunguarded-availability
+build:macos --copt=-Wno-error=unused-but-set-variable
+build:macos --copt=-Wno-error=unknown-warning-option
+build:macos --define=grpc_no_ares=true
+build:windows --copt="/Zc:preprocessor"
+build:windows --copt="/std:c++17"
+build:optimization --copt=-msse4.2
+build:optimization --compilation_mode=opt
+build:linux_ci --crosstool_top=//third_party/toolchains/gcc7_manylinux2010:toolchain
+build:linux_ci_gpu --crosstool_top=//third_party/toolchains/gcc7_manylinux2010-nvcc-cuda10.1:toolchain
+build:linux --copt=-Wno-error=stringop-overflow=
+build:linux --copt=-Wno-error
+build --verbose_failures
+build --test_output=errors
+build --experimental_ui_max_stdouterr_bytes=-1
+build:cache --remote_cache=https://storage.googleapis.com/tensorflow-sigs-io
+build:cache --remote_upload_local_results=false
