@@ -14,9 +14,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Download LLVM 20.1.7 and extract to /opt/vllm
 RUN apt-get update && \
-    apt-get install -y curl && \
+    apt-get install -y curl xz-utils && \
     curl -o LLVM-20.1.7.tar.xz https://storage.googleapis.com/axlearn-wheels/llvm/LLVM-20.1.7-Linux-ARM64.tar.xz && \
-    tar -xvf LLVM-20.1.7.tar.xz && \
+    xz -d -T0 LLVM-20.1.7.tar.xz | tar xvf - && \
     mkdir -p /opt/llvm && \
     mv LLVM-20.1.7-Linux-ARM64/* /opt/llvm/ && \
     rm -rf LLVM-20.1.7* && \
