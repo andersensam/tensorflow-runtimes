@@ -40,7 +40,7 @@ RUN /opt/venv/bin/python3.12 -m pip install --upgrade pip uv && \
     uv cache clean
 
 # Install Bazelisk (Bazel wrapper)
-RUN curl -o /usr/local/bin/bazel https://github.com/bazelbuild/bazelisk/releases/download/v1.29.0/bazelisk-linux-amd64 && \
+RUN curl -o /usr/local/bin/bazel https://storage.googleapis.com/axlearn-wheels/bazelisk/v1.29.0/bazelisk-linux-amd64 && \
     chmod +x /usr/local/bin/bazel && \
     /usr/local/bin/bazel version
 
