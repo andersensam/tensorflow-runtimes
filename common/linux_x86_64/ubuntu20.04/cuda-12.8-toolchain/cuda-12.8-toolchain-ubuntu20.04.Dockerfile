@@ -39,9 +39,10 @@ RUN /opt/venv/bin/python3.12 -m pip install --upgrade pip uv && \
     uv pip install setuptools wheel && \
     uv cache clean
 
-# Install Bazelisk (Bazel wrapper), using a local bazel file since the download doesn't work half the time
-COPY bazel /usr/local/bin/bazel
-RUN chmod +x /usr/local/bin/bazel && /usr/local/bin/bazel version
+# Install Bazelisk (Bazel wrapper)
+RUN curl -o /usr/local/bin/bazel https://github.com/bazelbuild/bazelisk/releases/download/v1.29.0/bazelisk-linux-amd64 && \
+    chmod +x /usr/local/bin/bazel && \
+    /usr/local/bin/bazel version
 
 # Create a workspace area
 RUN mkdir -p /workspace
