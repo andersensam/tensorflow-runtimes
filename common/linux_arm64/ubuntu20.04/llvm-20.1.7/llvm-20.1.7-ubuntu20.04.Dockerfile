@@ -3,11 +3,11 @@
 ARG TARGET=llvm
 ARG BASE_IMAGE=ubuntu:20.04
 
-FROM ${BASE_IMAGE} AS llvm-build
+FROM --platform=linux/arm64 ${BASE_IMAGE} AS llvm-build
 # Copy Python 3.12 into this image to build Ninja
 RUN mkdir -p /opt/python3.12 && mkdir -p /tmp/staging
 # Add the Python 3.12 install to this builder stage (build first with python-3.12-ubuntu20.04.Dockerfile)
-COPY --from=python:3.12-ubuntu20.04 /python3.12 /opt/python3.12
+COPY --from=python:3.12-ubuntu20.04-arm64 /python3.12 /opt/python3.12
 ENV PATH="/opt/python3.12/bin:$PATH"
 WORKDIR /tmp/staging
 # Install dependencies for LLVM
@@ -38,18 +38,19 @@ RUN git clone --depth 1 --branch release https://github.com/ninja-build/ninja.gi
 # and ensure CUDA_HOME is defined.
 # Do the compilation in one step to avoid caching the huge CUDA download and install, which we 
 # need to do again later in the cuda-12.8-toolchain image build anyways.
-RUN curl -o cuda-keyring_1.1-1_all.deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-keyring_1.1-1_all.deb && \
+RUN curl -o cuda-keyring_1.1-1_all.deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/sbsa/cuda-keyring_1.1-1_all.deb && \
     dpkg -i cuda-keyring_1.1-1_all.deb && \
     apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y cuda-libraries-dev-12-8 libcudnn9-dev-cuda-12 libnccl-dev ibverbs-utils \
-        patchelf cuda-nvvm-12-8 cuda-nvml-dev-12-8 cuda-nvrtc-dev-12-8 cuda-nvcc-12-8 libnccl2 \
-        cuda-cupti-12-8 cuda-cupti-dev-12-8 && \
+        patchelf wget curl llvm build-essential git \ 
+        cuda-nvvm-12-8 cuda-nvml-dev-12-8 cuda-nvrtc-dev-12-8 cuda-nvcc-12-8 libnccl2 \
+        cuda-cupti-12-8 cuda-cupti-dev-12-8 nano pkg-config libhdf5-serial-dev && \
     git clone --depth 1 --branch llvmorg-20.1.7 https://github.com/llvm/llvm-project.git && \
     mkdir -p llvm-project/build && \
     cd llvm-project/build && \
     CUDA_HOME=/usr/local/cuda-12.8 CC=clang CXX=clang++ cmake ../llvm -G Ninja \
         -DCMAKE_BUILD_TYPE=Release \
         -DLLVM_ENABLE_PROJECTS="clang;lld;mlir;lld;openmp" \
-        -DLLVM_TARGETS_TO_BUILD="X86;NVPTX" \
+        -DLLVM_TARGETS_TO_BUILD="AArch64;NVPTX" \
         -DLLVM_ENABLE_RUNTIMES="compiler-rt" \
         -DLLVM_INCLUDE_TESTS=OFF \
         -DLLVM_INCLUDE_EXAMPLES=OFF \
@@ -61,8 +62,9 @@ RUN curl -o cuda-keyring_1.1-1_all.deb https://developer.download.nvidia.com/com
     cd ../.. && \
     rm -rf llvm-project && \
     DEBIAN_FRONTEND=noninteractive apt-get remove -y cuda-libraries-dev-12-8 libcudnn9-dev-cuda-12 libnccl-dev ibverbs-utils \
-        patchelf cuda-nvvm-12-8 cuda-nvml-dev-12-8 cuda-nvrtc-dev-12-8 cuda-nvcc-12-8 libnccl2 \
-        cuda-cupti-12-8 cuda-cupti-dev-12-8 && \
+        patchelf wget curl llvm build-essential git \ 
+        cuda-nvvm-12-8 cuda-nvml-dev-12-8 cuda-nvrtc-dev-12-8 cuda-nvcc-12-8 libnccl2 \
+        cuda-cupti-12-8 cuda-cupti-dev-12-8 nano pkg-config libhdf5-serial-dev && \
     DEBIAN_FRONTEND=noninteractive apt-get autoremove -y && \
     apt clean -y && \
     rm -rf /var/lib/apt/lists/*

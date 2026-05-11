@@ -1,0 +1,34 @@
+# syntax=docker/dockerfile:1
+
+ARG TARGET=tensorflow
+ARG BASE_IMAGE=cuda-12.8-toolchain:ubuntu22.04
+    
+# Use the cuda-12.8-toolchain image for building TensorFlow (see common/linux_x86_64/ubuntu22.04/cuda-12.8-toolchain)
+# This includes Python 3.12, LLVM, a virtual environment, and bazel.
+FROM ${BASE_IMAGE} AS build
+
+# Prepare to build and set any environmental flags that bazel might be difficult with
+ENV CC_OPT_FLAGS="-Wno-gnu-offsetof-extensions -Wno-error -Wno-c23-extensions -Wno-macro-redefined" CPATH="${CUDA_HOME}/include:/usr/local/cuda-12.8/targets/x86_64-linux/include"
+
+# Clone TensorFlow
+RUN mkdir -p /workspace/tensorflow
+WORKDIR /workspace/tensorflow
+RUN git init /workspace/tensorflow && git config --global --add safe.directory /workspace/tensorflow && \
+    git remote add origin https://github.com/andersensam/tensorflow && \
+    git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin && \
+    git checkout r2.19
+
+# Copy the CUDA config into the image
+COPY tf_r2.19.1.3_ubuntu22.04.brc .tf_configure.bazelrc
+RUN --mount=type=cache,target=/root/.cache/bazel,id=bazel-cache \
+    bazel build //tensorflow/tools/pip_package:wheel --repo_env=WHEEL_NAME=tensorflow --config=cuda --config=cuda_wheel \ 
+        --copt=-Wno-gnu-offsetof-extensions --copt=-Wno-error --copt=-Wno-c23-extensions --verbose_failures \
+        --copt=-Wno-macro-redefined
+
+# Export the wheels
+RUN --mount=type=cache,target=/root/.cache/bazel,id=bazel-cache \
+    cp /workspace/tensorflow/bazel-bin/tensorflow/tools/pip_package/wheel_house/*.whl /workspace && \
+    mkdir -p /mnt/export && cp -rf /workspace/*.whl /mnt/export
+
+FROM scratch AS tensorflow
+COPY --from=build /mnt/export /wheels
