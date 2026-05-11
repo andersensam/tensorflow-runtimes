@@ -53,4 +53,4 @@ RUN rm -rf build && \
     mkdir -p /mnt/export && cp dist/*.whl /mnt/export
 
 FROM scratch AS tensorflow-io
-COPY --from=base /workspace/tensorflow-io/dist /wheels
+COPY --from=tensorflow-io-build /workspace/tensorflow-io/dist /wheels

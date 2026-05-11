@@ -1,11 +1,11 @@
 # syntax=docker/dockerfile:1
 
-ARG TARGET=tensorflow
+ARG TARGET=tensorflow-text
 ARG BASE_IMAGE=cuda-12.8-toolchain:ubuntu20.04-arm64
     
 # Use the TensorFlow Runtime image (tensorflow-runtime-ubuntu20.04.Dockerfile)
 # to greatly speed up build time.
-FROM ${BASE_IMAGE} AS build
+FROM ${BASE_IMAGE} AS tensorflow-text-build
 
 WORKDIR /workspace/tensorflow
 
@@ -49,5 +49,5 @@ RUN --mount=type=cache,target=/root/.cache/bazel,id=bazel-cache-r2.21.0.1-ubuntu
     cp /workspace/text/dist/*.whl /workspace && \
     mkdir -p /mnt/export && cp -rf /workspace/*.whl /mnt/export
 
-FROM scratch AS tensorflow
-COPY --from=build /mnt/export /wheels
+FROM scratch AS tensorflow-text
+COPY --from=tensorflow-text-build /mnt/export /wheels
