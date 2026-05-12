@@ -7,7 +7,8 @@ ARG BASE_IMAGE=cuda-12.8-toolchain:ubuntu20.04
 # to greatly speed up build time.
 FROM ${BASE_IMAGE} AS tensorflow-text-build
 
-WORKDIR /workspace/tensorflow
+RUN mkdir -p /workspace/text
+WORKDIR /workspace/text
 
 # Enable busting the cache and forcing a git refresh and new bazel build
 ARG GIT_BUILD_NUMBER 0
