@@ -5,6 +5,7 @@ build --action_env TF_HEADER_DIR="/opt/venv/lib/python3.12/site-packages/tensorf
 build --action_env TF_SHARED_LIBRARY_DIR="/opt/venv/lib/python3.12/site-packages/tensorflow"
 build --action_env TF_SHARED_LIBRARY_NAME="libtensorflow_framework.so.2"
 build --cxxopt="-std=c++17"
+build --host_cxxopt="-std=c++17"
 build --experimental_repo_remote_exec
 build --enable_platform_specific_config
 build:macos --copt="-DGRPC_BAZEL_BUILD"
