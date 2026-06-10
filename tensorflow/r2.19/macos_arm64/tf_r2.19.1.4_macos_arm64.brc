@@ -1,0 +1,13 @@
+build:opt --copt=-Wno-gnu-offsetof-extensions
+build:opt --host_copt=-Wno-gnu-offsetof-extensions
+build:opt --copt=-Wno-error
+build:opt --host_copt=-Wno-error
+build:opt --copt=-Wno-c23-extensions
+build:opt --host_copt=-Wno-c23-extensions
+build:opt --copt=-Wno-macro-redefined
+build:opt --host_copt=-Wno-macro-redefined
+test --test_size_filters=small,medium
+test:v1 --test_tag_filters=-benchmark-test,-no_oss,-oss_excluded,-gpu,-nomac,-no_mac,-mac_excluded,-oss_serial
+test:v1 --build_tag_filters=-benchmark-test,-no_oss,-oss_excluded,-gpu,-nomac,-no_mac,-mac_excluded
+test:v2 --test_tag_filters=-benchmark-test,-no_oss,-oss_excluded,-gpu,-nomac,-no_mac,-mac_excluded,-oss_serial,-v1only
+test:v2 --build_tag_filters=-benchmark-test,-no_oss,-oss_excluded,-gpu,-nomac,-no_mac,-mac_excluded,-v1only
