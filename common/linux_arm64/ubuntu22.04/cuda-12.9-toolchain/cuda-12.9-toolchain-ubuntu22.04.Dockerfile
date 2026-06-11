@@ -28,7 +28,7 @@ RUN apt-get update && apt-get install -y curl && \
     curl -o cuda-keyring_1.1-1_all.deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/sbsa/cuda-keyring_1.1-1_all.deb && \
     dpkg -i cuda-keyring_1.1-1_all.deb && \
     apt-get update && apt-get install -y cuda-libraries-dev-12-9 libcudnn9-dev-cuda-12 libnccl-dev ibverbs-utils \
-         patchelf wget curl llvm build-essential git \ 
+         patchelf wget curl llvm build-essential git \
          cuda-nvvm-12-9 cuda-nvml-dev-12-9 cuda-nvrtc-dev-12-9 cuda-nvcc-12-9 libnccl2 \
          cuda-cupti-12-9 cuda-cupti-dev-12-9 pkg-config libhdf5-serial-dev libxml2-dev libssl-dev xxd nano && \
     apt clean -y && \

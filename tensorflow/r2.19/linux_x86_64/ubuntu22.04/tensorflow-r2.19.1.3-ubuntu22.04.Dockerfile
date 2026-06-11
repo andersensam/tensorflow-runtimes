@@ -27,7 +27,7 @@ ARG BAZEL_BUILD_NUMBER 0
 # Copy the CUDA config into the image
 COPY tf_r2.19.1.3_ubuntu22.04.brc .tf_configure.bazelrc
 RUN --mount=type=cache,target=/root/.cache/bazel,id=bazel-cache-r2.19.1.3-ubuntu22.04 \
-    bazel build //tensorflow/tools/pip_package:wheel --repo_env=WHEEL_NAME=tensorflow --config=cuda --config=cuda_wheel \ 
+    bazel build //tensorflow/tools/pip_package:wheel --repo_env=WHEEL_NAME=tensorflow --config=cuda --config=cuda_wheel \
         --copt=-Wno-gnu-offsetof-extensions --copt=-Wno-error --copt=-Wno-c23-extensions --verbose_failures \
         --copt=-Wno-macro-redefined
 

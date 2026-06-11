@@ -41,7 +41,7 @@ RUN git clone --depth 1 --branch release https://github.com/ninja-build/ninja.gi
 RUN curl -o cuda-keyring_1.1-1_all.deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/sbsa/cuda-keyring_1.1-1_all.deb && \
     dpkg -i cuda-keyring_1.1-1_all.deb && \
     apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y cuda-libraries-dev-12-8 libcudnn9-dev-cuda-12 libnccl-dev ibverbs-utils \
-        patchelf wget curl llvm build-essential git \ 
+        patchelf wget curl llvm build-essential git \
         cuda-nvvm-12-8 cuda-nvml-dev-12-8 cuda-nvrtc-dev-12-8 cuda-nvcc-12-8 libnccl2 \
         cuda-cupti-12-8 cuda-cupti-dev-12-8 nano pkg-config libhdf5-serial-dev && \
     git clone --depth 1 --branch llvmorg-20.1.7 https://github.com/llvm/llvm-project.git && \
@@ -62,7 +62,7 @@ RUN curl -o cuda-keyring_1.1-1_all.deb https://developer.download.nvidia.com/com
     cd ../.. && \
     rm -rf llvm-project && \
     DEBIAN_FRONTEND=noninteractive apt-get remove -y cuda-libraries-dev-12-8 libcudnn9-dev-cuda-12 libnccl-dev ibverbs-utils \
-        patchelf wget curl llvm build-essential git \ 
+        patchelf wget curl llvm build-essential git \
         cuda-nvvm-12-8 cuda-nvml-dev-12-8 cuda-nvrtc-dev-12-8 cuda-nvcc-12-8 libnccl2 \
         cuda-cupti-12-8 cuda-cupti-dev-12-8 nano pkg-config libhdf5-serial-dev && \
     DEBIAN_FRONTEND=noninteractive apt-get autoremove -y && \
