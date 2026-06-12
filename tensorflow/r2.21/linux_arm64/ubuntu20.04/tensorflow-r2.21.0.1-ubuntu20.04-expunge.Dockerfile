@@ -22,15 +22,6 @@ RUN git init /workspace/tensorflow && git config --global --add safe.directory /
 ARG BAZEL_BUILD_NUMBER 0
 
 # Copy the CUDA config into the image
-ENV HERMETIC_PYTHON_VERSION=3.12
-COPY tf_r2.21.0.2_ubuntu20.04_arm64.brc .tf_configure.bazelrc
-RUN bazel build //tensorflow/tools/pip_package:wheel --repo_env=WHEEL_NAME=tensorflow --config=cuda --config=cuda_wheel \
-        --copt=-Wno-gnu-offsetof-extensions --copt=-Wno-error --copt=-Wno-c23-extensions --verbose_failures \
-        --copt=-Wno-macro-redefined --features=-layering_check --features=-use_header_modules --copt=-DBORINGSSL_PREFIX=TF 
-
-# Export the wheels
-RUN cp /workspace/tensorflow/bazel-bin/tensorflow/tools/pip_package/wheel_house/*.whl /workspace && \
-    mkdir -p /mnt/export && cp -rf /workspace/*.whl /mnt/export
-
-FROM scratch AS tensorflow
-COPY --from=build /mnt/export /wheels
+COPY tf_r2.21.0.1_ubuntu20.04_arm64.brc .tf_configure.bazelrc
+RUN --mount=type=cache,target=/root/.cache/bazel,id=bazel-cache-r2.21.0.1-ubuntu20.04 \
+    bazel clean --expunge

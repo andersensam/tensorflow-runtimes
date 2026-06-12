@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 ARG TARGET=tensorflow
-ARG BASE_IMAGE=cuda-12.8-toolchain:ubuntu20.04-arm64
+ARG BASE_IMAGE=cuda-12.8-toolchain:ubuntu20.04
     
 # Use the CUDA 12.8 runtime image (for TensorFlow) (cuda-12.8-toolchain-ubuntu20.04.Dockerfile)
 # to greatly speed up build time.
@@ -22,14 +22,6 @@ RUN git init /workspace/tensorflow && git config --global --add safe.directory /
 ARG BAZEL_BUILD_NUMBER 0
 
 # Copy the CUDA config into the image
-COPY tf_r2.21.0.1_ubuntu20.04_arm64.brc .tf_configure.bazelrc
-RUN bazel build //tensorflow/tools/pip_package:wheel --repo_env=WHEEL_NAME=tensorflow --config=cuda --config=cuda_wheel \
-        --copt=-Wno-gnu-offsetof-extensions --copt=-Wno-error --copt=-Wno-c23-extensions --verbose_failures \
-        --copt=-Wno-macro-redefined
-
-# Export the wheels
-RUN cp /workspace/tensorflow/bazel-bin/tensorflow/tools/pip_package/wheel_house/*.whl /workspace && \
-    mkdir -p /mnt/export && cp -rf /workspace/*.whl /mnt/export
-
-FROM scratch AS tensorflow
-COPY --from=build /mnt/export /wheels
+COPY tf_r2.21.0.1_ubuntu20.04.brc .tf_configure.bazelrc
+RUN --mount=type=cache,target=/root/.cache/bazel,id=bazel-cache-r2.21.0.1-ubuntu20.04 \
+    bazel clean --expunge
