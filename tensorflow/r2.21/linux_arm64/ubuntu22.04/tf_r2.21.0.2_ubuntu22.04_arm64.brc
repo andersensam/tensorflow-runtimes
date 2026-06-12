@@ -24,3 +24,4 @@ test:v1 --test_tag_filters=-benchmark-test,-no_oss,-oss_excluded,-no_gpu,-oss_se
 test:v1 --build_tag_filters=-benchmark-test,-no_oss,-oss_excluded,-no_gpu
 test:v2 --test_tag_filters=-benchmark-test,-no_oss,-oss_excluded,-no_gpu,-oss_serial,-v1only
 test:v2 --build_tag_filters=-benchmark-test,-no_oss,-oss_excluded,-no_gpu,-v1only
+build --linkopt=-Wl,-z,max-page-size=65536
