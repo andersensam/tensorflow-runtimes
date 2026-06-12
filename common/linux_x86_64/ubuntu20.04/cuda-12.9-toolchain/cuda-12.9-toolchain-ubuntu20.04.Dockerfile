@@ -11,7 +11,7 @@ COPY --from=python:3.12-ubuntu20.04 /python3.12 /opt/python3.12
 
 # Copy LLVM 20.1.7 into this image (build first with llvm-20-ubuntu20.04.Dockerfile)
 RUN mkdir -p /opt/llvm
-COPY --from=llvm:20.1.7-ubuntu20.04 /llvm /opt/llvm
+COPY --from=llvm:21.1.8-ubuntu20.04 /llvm /opt/llvm
 
 # Disable apt prompts
 ENV DEBIAN_FRONTEND=noninteractive
