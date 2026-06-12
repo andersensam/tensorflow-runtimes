@@ -10,6 +10,10 @@ RUN mkdir -p /opt/python3.12 && mkdir -p /tmp/staging
 COPY --from=python:3.12-ubuntu20.04-arm64 /python3.12 /opt/python3.12
 ENV PATH="/opt/python3.12/bin:$PATH"
 WORKDIR /tmp/staging
+# Configure apt to keep downloaded packages for caching
+RUN rm -f /etc/apt/apt.conf.d/docker-clean; \
+    echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache
+
 # Install dependencies for LLVM
 RUN --mount=type=cache,id=apt-ubuntu20.04-arm64,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,id=apt-lists-ubuntu20.04-arm64,target=/var/lib/apt/lists,sharing=locked \

@@ -16,6 +16,10 @@ COPY --from=llvm:22.1.7-ubuntu20.04-arm64 /llvm /opt/llvm
 # Disable apt prompts
 ENV DEBIAN_FRONTEND=noninteractive
 
+# Configure apt to keep downloaded packages for caching
+RUN rm -f /etc/apt/apt.conf.d/docker-clean; \
+    echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache
+
 # Enable the CUDA repository and install the required libraries for building TensorFlow
 RUN --mount=type=cache,id=apt-ubuntu20.04-arm64,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,id=apt-lists-ubuntu20.04-arm64,target=/var/lib/apt/lists,sharing=locked \
