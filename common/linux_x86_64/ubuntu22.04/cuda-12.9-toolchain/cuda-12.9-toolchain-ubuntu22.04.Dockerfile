@@ -12,27 +12,31 @@ COPY --from=python:3.12-ubuntu22.04 /python3.12 /opt/python3.12
 # Disable apt prompts
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Download LLVM 20.1.7 and extract to /opt/vllm
-RUN apt-get update && \
+# Configure apt to keep downloaded packages for caching
+RUN rm -f /etc/apt/apt.conf.d/docker-clean; \
+    echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache
+
+# Download LLVM 22.1.7 and extract to /opt/llvm
+RUN --mount=type=cache,id=apt-ubuntu22.04-x86_64,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,id=apt-lists-ubuntu22.04-x86_64,target=/var/lib/apt/lists,sharing=locked \
+    apt-get update && \
     apt-get install -y curl xz-utils && \
-    curl -o LLVM-20.1.7.tar.xz https://storage.googleapis.com/axlearn-wheels/llvm/LLVM-20.1.7-Linux-X64.tar.xz && \
-    tar -xvf LLVM-20.1.7.tar.xz && \
+    curl -o LLVM-22.1.7.tar.xz https://storage.googleapis.com/axlearn-wheels/llvm/LLVM-22.1.7-Linux-X64.tar.xz && \
+    tar -xvf LLVM-22.1.7.tar.xz && \
     mkdir -p /opt/llvm && \
-    mv LLVM-20.1.7-Linux-X64/* /opt/llvm/ && \
-    rm -rf LLVM-20.1.7* && \
-    apt clean -y && \
-    rm -rf /var/lib/apt/lists/*
+    mv LLVM-22.1.7-Linux-X64/* /opt/llvm/ && \
+    rm -rf LLVM-22.1.7*
 
 # Enable the CUDA repository and install the required libraries for building TensorFlow
-RUN apt-get update && apt-get install -y curl && \
+RUN --mount=type=cache,id=apt-ubuntu22.04-x86_64,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,id=apt-lists-ubuntu22.04-x86_64,target=/var/lib/apt/lists,sharing=locked \
+    apt-get update && apt-get install -y curl && \
     curl -o cuda-keyring_1.1-1_all.deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb && \
     dpkg -i cuda-keyring_1.1-1_all.deb && \
     apt-get update && apt-get install -y cuda-libraries-dev-12-9 libcudnn9-dev-cuda-12 libnccl-dev ibverbs-utils \
          patchelf wget curl llvm build-essential git \
          cuda-nvvm-12-9 cuda-nvml-dev-12-9 cuda-nvrtc-dev-12-9 cuda-nvcc-12-9 libnccl2 \
-         cuda-cupti-12-9 cuda-cupti-dev-12-9 libxml2-dev libssl-dev xxd nano && \
-    apt clean -y && \
-    rm -rf /var/lib/apt/lists/*
+         cuda-cupti-12-9 cuda-cupti-dev-12-9 libxml2-dev libssl-dev xxd nano
 
 # Setup the virtual environment for building
 ENV VIRTUAL_ENV=/opt/venv
