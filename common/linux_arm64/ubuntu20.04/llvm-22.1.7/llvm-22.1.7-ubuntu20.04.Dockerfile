@@ -63,6 +63,7 @@ RUN --mount=type=cache,id=apt-ubuntu20.04-arm64,target=/var/cache/apt,sharing=lo
         -DLLVM_INCLUDE_TESTS=OFF \
         -DLLVM_INCLUDE_EXAMPLES=OFF \
         -DLLVM_INCLUDE_BENCHMARKS=OFF \
+        -DCLANG_DEFAULT_LINKER=lld \
         -DPython3_EXECUTABLE="/opt/python3.12/bin/python3.12" \
         -DCMAKE_INSTALL_PREFIX="/tmp/staging/llvm" && \
     ninja -C . && \
