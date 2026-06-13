@@ -19,6 +19,8 @@ build:linux --repo_env=LLVM_VERSION=20
 build:linux --repo_env=SYSROOT_DIST=linux_glibc_2_31
 build:opt --copt=-Wno-sign-compare
 build:opt --host_copt=-Wno-sign-compare
+build --copt=-DHWY_DISABLE_AVX3
+build --host_copt=-DHWY_DISABLE_AVX3
 test --test_size_filters=small,medium
 test --test_env=LD_LIBRARY_PATH
 test:v1 --test_tag_filters=-benchmark-test,-no_oss,-oss_excluded,-no_gpu,-oss_serial
