@@ -10,6 +10,9 @@ WORKDIR /workspace
 # Enable busting the cache and forcing a git refresh and new bazel build
 ARG GIT_BUILD_NUMBER 0
 
+# Set environment variables to compile with LLVM-22
+ENV CC=/opt/llvm/bin/clang CXX=/opt/llvm/bin/clang++
+
 # Clone the repository
 RUN git clone --depth 1 --branch 0.8.4.1 https://github.com/andersensam/array_record.git /workspace/array_record
 WORKDIR /workspace/array_record
@@ -21,11 +24,11 @@ ARG BAZEL_BUILD_NUMBER 0
 RUN --mount=type=cache,target=/root/.cache/bazel,id=bazel-cache-array-record-0.8.4.1-ubuntu22.04-arm64 \
     bazel build ... \
         --@rules_python//python/config_settings:python_version=3.12 \
-        --copt=-std=c++17 \
+        --cxxopt=-std=c++17 \
         --host_cxxopt=-std=c++17 \
-        --copt=-Wno-deprecated-declarations \
-        --copt=-Wno-parentheses \
-        --copt=-Wno-sign-compare
+        --cxxopt=-Wno-deprecated-declarations \
+        --cxxopt=-Wno-parentheses \
+        --cxxopt=-Wno-sign-compare
 
 # Reorganize files for setup.py
 RUN python3 -c " \
