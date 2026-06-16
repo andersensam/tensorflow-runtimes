@@ -23,12 +23,31 @@ ARG BAZEL_BUILD_NUMBER 0
 # Build the C++ and Python extensions with Bazel
 RUN --mount=type=cache,target=/root/.cache/bazel,id=bazel-cache-array-record-0.8.4.1-ubuntu22.04-x86_64 \
     bazel build ... \
+        -c opt \
         --@rules_python//python/config_settings:python_version=3.12 \
         --cxxopt=-std=c++17 \
         --host_cxxopt=-std=c++17 \
         --cxxopt=-Wno-deprecated-declarations \
         --cxxopt=-Wno-parentheses \
-        --cxxopt=-Wno-sign-compare
+        --cxxopt=-Wno-sign-compare \
+        --linkopt=-Wl,--allow-shlib-undefined \
+        --host_linkopt=-Wl,--allow-shlib-undefined
+
+# Run Bazel tests to ensure correctness
+RUN --mount=type=cache,target=/root/.cache/bazel,id=bazel-cache-array-record-0.8.4.1-ubuntu22.04-x86_64 \
+    bazel test ... \
+        -c opt \
+        --@rules_python//python/config_settings:python_version=3.12 \
+        --cxxopt=-std=c++17 \
+        --host_cxxopt=-std=c++17 \
+        --cxxopt=-Wno-deprecated-declarations \
+        --cxxopt=-Wno-parentheses \
+        --cxxopt=-Wno-sign-compare \
+        --linkopt=-Wl,--allow-shlib-undefined \
+        --host_linkopt=-Wl,--allow-shlib-undefined \
+        --verbose_failures \
+        --test_output=errors
+
 
 # Reorganize files for setup.py
 RUN python3 -c " \
