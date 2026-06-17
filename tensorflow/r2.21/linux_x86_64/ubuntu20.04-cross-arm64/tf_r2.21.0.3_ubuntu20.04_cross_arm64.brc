@@ -14,7 +14,7 @@ build --action_env CXX="/opt/llvm/bin/clang++"
 build --action_env GCC_PATH="/opt/llvm/bin/clang"
 build --action_env CC="/opt/llvm/bin/clang"
 build --action_env CLANG_COMPILER_PATH="/opt/llvm/bin/clang"
-build:linux --repo_env=LLVM_VERSION=18
+build:linux --repo_env=LLVM_VERSION=22
 build:linux --repo_env=SYSROOT_DIST=linux_glibc_2_31
 build:opt --copt=-Wno-sign-compare
 build:opt --host_copt=-Wno-sign-compare
