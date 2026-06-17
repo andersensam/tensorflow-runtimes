@@ -21,7 +21,7 @@ RUN git init /workspace/tensorflow && git config --global --add safe.directory /
     git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin && \
     git checkout r2.19
 
-# Enable busting the cache and focuing just a new bazel build
+# Enable busting the cache and forcing just a new bazel build
 ARG BAZEL_BUILD_NUMBER 0
 
 # Copy the CUDA config into the image
@@ -31,7 +31,9 @@ RUN --mount=type=cache,target=/root/.cache/bazel,id=bazel-cache-r2.19.1.4-ubuntu
         --copt=-Wno-gnu-offsetof-extensions --copt=-Wno-error --copt=-Wno-c23-extensions --verbose_failures \
         --copt=-Wno-macro-redefined \
         --linkopt=--rtlib=compiler-rt \
-        --host_linkopt=--rtlib=compiler-rt
+        --linkopt=--unwindlib=libgcc \
+        --host_linkopt=--rtlib=compiler-rt \
+        --host_linkopt=--unwindlib=libgcc
 
 # Export the wheels
 RUN --mount=type=cache,target=/root/.cache/bazel,id=bazel-cache-r2.19.1.4-ubuntu22.04 \

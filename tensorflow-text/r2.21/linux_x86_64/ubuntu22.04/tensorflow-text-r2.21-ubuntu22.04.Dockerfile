@@ -19,7 +19,7 @@ RUN git init /workspace/text && git config --global --add safe.directory /worksp
     git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin && \
     git checkout 2.21
 
-# Enable busting the cache and focuing just a new bazel build
+# Enable busting the cache and forcing just a new bazel build
 ARG BAZEL_BUILD_NUMBER 0
 
 # Set the env since we aren't using the normal build targets

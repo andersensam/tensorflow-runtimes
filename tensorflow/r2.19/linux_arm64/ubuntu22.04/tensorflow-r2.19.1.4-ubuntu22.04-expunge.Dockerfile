@@ -21,7 +21,7 @@ RUN git init /workspace/tensorflow && git config --global --add safe.directory /
     git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin && \
     git checkout r2.19
 
-# Enable busting the cache and focuing just a new bazel build
+# Enable busting the cache and forcing just a new bazel build
 ARG BAZEL_BUILD_NUMBER 0
 
 # Copy the CUDA config into the image

@@ -23,7 +23,7 @@ RUN git clone --depth 1 https://github.com/andersensam/tensorflow-io && \
 
 WORKDIR /workspace/tensorflow-io
 
-# Enable busting the cache and focuing just a new bazel build
+# Enable busting the cache and forcing just a new bazel build
 ARG BAZEL_BUILD_NUMBER 0
 
 # Copy the TensorFlow I/O config

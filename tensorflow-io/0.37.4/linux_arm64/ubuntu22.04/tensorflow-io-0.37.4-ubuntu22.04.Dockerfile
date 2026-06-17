@@ -25,7 +25,7 @@ RUN git clone --depth 1 --branch tensorflow_r2.21.0.1 https://github.com/anderse
 
 WORKDIR /workspace/tensorflow-io
 
-# Enable busting the cache and focuing just a new bazel build
+# Enable busting the cache and forcing just a new bazel build
 ARG BAZEL_BUILD_NUMBER 0
 
 COPY tfio_0.37.4_ubuntu22.04_arm64.brc .bazelrc

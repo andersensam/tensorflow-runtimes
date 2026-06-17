@@ -16,7 +16,7 @@ ARG GIT_BUILD_NUMBER 0
 RUN git clone --depth 1 --branch tensorflow_r2.21.0.1 https://github.com/andersensam/tensorflow-metadata
 WORKDIR /workspace/tensorflow-metadata
 
-# Enable busting the cache and focuing just a new bazel build
+# Enable busting the cache and forcing just a new bazel build
 ARG BAZEL_BUILD_NUMBER 0
 
 # Build the wheel
