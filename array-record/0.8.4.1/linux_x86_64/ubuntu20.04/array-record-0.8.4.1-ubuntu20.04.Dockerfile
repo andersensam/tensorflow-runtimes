@@ -25,8 +25,6 @@ RUN --mount=type=cache,target=/root/.cache/bazel,id=bazel-cache-array-record-0.8
     bazel build ... \
         -c opt \
         --@rules_python//python/config_settings:python_version=3.12 \
-        --copt=-fvisibility=default \
-        --cxxopt=-fvisibility=default \
         --cxxopt=-std=c++17 \
         --host_cxxopt=-std=c++17 \
         --cxxopt=-Wno-deprecated-declarations \
@@ -40,8 +38,6 @@ RUN --mount=type=cache,target=/root/.cache/bazel,id=bazel-cache-array-record-0.8
     bazel test ... \
         -c opt \
         --@rules_python//python/config_settings:python_version=3.12 \
-        --copt=-fvisibility=default \
-        --cxxopt=-fvisibility=default \
         --cxxopt=-std=c++17 \
         --host_cxxopt=-std=c++17 \
         --cxxopt=-Wno-deprecated-declarations \

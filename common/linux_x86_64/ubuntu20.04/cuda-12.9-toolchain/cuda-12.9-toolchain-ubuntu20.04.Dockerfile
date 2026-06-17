@@ -9,7 +9,7 @@ FROM ${BASE_IMAGE} AS cuda-12.9-toolchain
 RUN mkdir -p /opt/python3.12 && mkdir -p /tmp/staging
 COPY --from=python:3.12-ubuntu20.04 /python3.12 /opt/python3.12
 
-# Copy LLVM 20.1.7 into this image (build first with llvm-20-ubuntu20.04.Dockerfile)
+# Copy LLVM 22.1.7 into this image (build first with llvm-22.1.7-ubuntu20.04.Dockerfile)
 RUN mkdir -p /opt/llvm
 COPY --from=llvm:22.1.7-ubuntu20.04 /llvm /opt/llvm
 
