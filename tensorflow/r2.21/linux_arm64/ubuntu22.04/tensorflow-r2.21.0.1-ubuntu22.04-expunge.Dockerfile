@@ -23,5 +23,5 @@ ARG BAZEL_BUILD_NUMBER 0
 
 # Copy the CUDA config into the image
 COPY tf_r2.21.0.1_ubuntu22.04_arm64.brc .tf_configure.bazelrc
-RUN --mount=type=cache,target=/root/.cache/bazel,id=bazel-cache-r2.21.0.1-ubuntu22.04 \
+RUN --mount=type=cache,target=/root/.cache/bazel,id=bazel-cache-r2.21.0.1-ubuntu22.04-arm64 \
     bazel clean --expunge

@@ -41,12 +41,12 @@ ENV PYTHON_BIN_PATH="/opt/venv/python3.12/bin/python3.12" \
 COPY text_r2.21_ubuntu20.04_arm64.brc .bazelrc
 COPY text_r2.21_ubuntu20.04_arm64.tfc .tf_configure.bazelrc
 # Use the TensorFlow cache, if it exists since it pulls many of the same deps
-RUN --mount=type=cache,target=/root/.cache/bazel,id=bazel-cache-r2.21.0.1-ubuntu20.04 \
+RUN --mount=type=cache,target=/root/.cache/bazel,id=bazel-cache-r2.21.0.1-ubuntu20.04-arm64 \
     bazel run --experimental_repo_remote_exec --repo_env=USE_PYWRAP_RULES=False \
       //oss_scripts/pip_package:build_pip_package -- /workspace/text/dist
 
 # Export the wheels
-RUN --mount=type=cache,target=/root/.cache/bazel,id=bazel-cache-r2.21.0.1-ubuntu20.04 \
+RUN --mount=type=cache,target=/root/.cache/bazel,id=bazel-cache-r2.21.0.1-ubuntu20.04-arm64 \
     cp /workspace/text/dist/*.whl /workspace && \
     mkdir -p /mnt/export && cp -rf /workspace/*.whl /mnt/export
 
