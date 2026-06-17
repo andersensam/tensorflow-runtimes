@@ -17,6 +17,9 @@ ENV CC=/opt/llvm/bin/clang CXX=/opt/llvm/bin/clang++
 RUN git clone --depth 1 --branch 0.8.4.1 https://github.com/andersensam/array_record.git /workspace/array_record
 WORKDIR /workspace/array_record
 
+# Set the bazel version
+RUN echo 7.4.1 > .bazelversion
+
 # Enable busting the cache and focusing just a new bazel build
 ARG BAZEL_BUILD_NUMBER 0
 
