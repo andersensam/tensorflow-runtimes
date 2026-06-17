@@ -38,6 +38,13 @@ RUN /opt/python3.12/bin/python3.12 -m venv ${VIRTUAL_ENV}
 ENV PATH="$VIRTUAL_ENV/bin:/opt/llvm/bin:$PATH"
 ENV LLVM_HOME=/opt/llvm CUDA_HOME=/usr/local/cuda-12.9
 
+# Create symlinks to satisfy hardcoded paths in tensorflow cross-compile toolchains
+RUN ln -s /opt/llvm /usr/lib/llvm-18 && \
+    ln -s / /dt9 && \
+    ln -s /usr/aarch64-linux-gnu /dt10 && \
+    mkdir -p /opt/llvm/lib/clang && \
+    ln -s /opt/llvm/lib/clang/22 /opt/llvm/lib/clang/18
+
 # Upgrade pip and install uv
 RUN /opt/venv/bin/python3.12 -m pip install --upgrade pip uv && \
     pip cache purge && \
