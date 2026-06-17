@@ -54,35 +54,40 @@ RUN --mount=type=cache,target=/root/.cache/bazel,id=bazel-cache-array-record-0.8
 
 
 # Reorganize files for setup.py
-RUN python3 -c " \
-import os, shutil; \
-os.makedirs('/workspace/build/array_record', exist_ok=True); \
-shutil.copy('setup.py', '/workspace/build/'); \
-shutil.copy('LICENSE', '/workspace/build/'); \
-\
-def copy_tree(src, dst): \
-    for root, dirs, files in os.walk(src): \
-        dirs[:] = [d for d in dirs if not d.startswith('bazel-')]; \
-        rel_path = os.path.relpath(root, src); \
-        target_dir = dst if rel_path == '.' else os.path.join(dst, rel_path); \
-        os.makedirs(target_dir, exist_ok=True); \
-        for f in files: shutil.copy2(os.path.join(root, f), os.path.join(target_dir, f)); \
-\
-copy_tree('.', '/workspace/build/array_record'); \
-\
-def copy_built_files(src_dir, dst_dir): \
-    for root, dirs, files in os.walk(src_dir): \
-        dirs[:] = [d for d in dirs if d != '.runfiles' and not d.endswith('_obj')]; \
-        for f in files: \
-            if f.endswith('.so') or f.endswith('_pb2.py'): \
-                rel_path = os.path.relpath(root, src_dir); \
-                target_dir = os.path.join(dst_dir, rel_path); \
-                os.makedirs(target_dir, exist_ok=True); \
-                shutil.copy2(os.path.join(root, f), os.path.join(target_dir, f)); \
-\
-copy_built_files('bazel-bin/cpp', '/workspace/build/array_record/cpp'); \
-copy_built_files('bazel-bin/python', '/workspace/build/array_record/python'); \
-"
+RUN --mount=type=cache,target=/root/.cache/bazel,id=bazel-cache-array-record-0.8.4.1-ubuntu20.04-arm64 \
+    python3 <<EOF
+import os
+import shutil
+
+os.makedirs('/workspace/build/array_record', exist_ok=True)
+shutil.copy('setup.py', '/workspace/build/')
+shutil.copy('LICENSE', '/workspace/build/')
+
+def copy_tree(src, dst):
+    for root, dirs, files in os.walk(src):
+        dirs[:] = [d for d in dirs if not d.startswith('bazel-')]
+        rel_path = os.path.relpath(root, src)
+        target_dir = dst if rel_path == '.' else os.path.join(dst, rel_path)
+        os.makedirs(target_dir, exist_ok=True)
+        for f in files:
+            shutil.copy2(os.path.join(root, f), os.path.join(target_dir, f))
+
+copy_tree('.', '/workspace/build/array_record')
+
+def copy_built_files(src_dir, dst_dir):
+    for root, dirs, files in os.walk(src_dir):
+        dirs[:] = [d for d in dirs if d != '.runfiles' and not d.endswith('_obj')]
+        for f in files:
+            if f.endswith('.so') or f.endswith('_pb2.py'):
+                rel_path = os.path.relpath(root, src_dir)
+                target_dir = os.path.join(dst_dir, rel_path)
+                os.makedirs(target_dir, exist_ok=True)
+                shutil.copy2(os.path.join(root, f), os.path.join(target_dir, f))
+
+copy_built_files('bazel-bin/cpp', '/workspace/build/array_record/cpp')
+copy_built_files('bazel-bin/python', '/workspace/build/array_record/python')
+EOF
+
 
 # Build the wheel
 WORKDIR /workspace/build
