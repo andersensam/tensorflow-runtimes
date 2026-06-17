@@ -38,7 +38,11 @@ RUN /opt/python3.12/bin/python3.12 -m venv ${VIRTUAL_ENV}
 ENV PATH="$VIRTUAL_ENV/bin:/opt/llvm/bin:$PATH"
 ENV LLVM_HOME=/opt/llvm CUDA_HOME=/usr/local/cuda-12.9
 
-# Create symlinks to satisfy hardcoded paths in tensorflow cross-compile toolchains
+# Setup symlinks to trick Bazel's cross_compile_toolchain_suite.
+# The toolchain hardcodes its compiler and header paths to /usr/lib/llvm-18 and /dt9 /dt10.
+# By symlinking our custom LLVM 22 installation (in /opt/llvm) to /usr/lib/llvm-18,
+# and our clang 22 resource directory to clang 18, we seamlessly override the
+# hardcoded paths without needing to patch dozens of build files across TensorFlow!
 RUN ln -s /opt/llvm /usr/lib/llvm-18 && \
     ln -s / /dt9 && \
     ln -s /usr/aarch64-linux-gnu /dt10 && \

@@ -8,12 +8,17 @@ build:cuda --repo_env HERMETIC_CUDA_COMPUTE_CAPABILITIES="compute_90,compute_100
 build --action_env LD_LIBRARY_PATH="/usr/local/cuda/lib64"
 build --config=cuda_clang
 build --config=clang_local
+# The variables below reflect the physical installation path inside our custom container image.
+# Bazel's cross_compile_toolchain_suite explicitly calls /usr/lib/llvm-18/bin/clang due to its hardcoded paths,
+# but our Dockerfile symlinks /usr/lib/llvm-18 to /opt/llvm so it seamlessly redirects to the real LLVM 22 binary!
 build --action_env CLANG_CUDA_COMPILER_PATH="/opt/llvm/bin/clang"
 build --action_env CPP_PATH="/opt/llvm/bin/clang++"
 build --action_env CXX="/opt/llvm/bin/clang++"
 build --action_env GCC_PATH="/opt/llvm/bin/clang"
 build --action_env CC="/opt/llvm/bin/clang"
 build --action_env CLANG_COMPILER_PATH="/opt/llvm/bin/clang"
+# Using LLVM_VERSION=22 works because rules_ml_toolchain has been patched to support version 22 with dummy archives.
+# Under the hood, Bazel resolves its toolchain to these paths, which we have symlinked to LLVM 22!
 build:linux --repo_env=LLVM_VERSION=22
 build:linux --repo_env=SYSROOT_DIST=linux_glibc_2_31
 build:opt --copt=-Wno-sign-compare
