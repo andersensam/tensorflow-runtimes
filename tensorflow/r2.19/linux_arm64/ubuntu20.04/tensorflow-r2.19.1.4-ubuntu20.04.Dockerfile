@@ -31,7 +31,9 @@ COPY tf_r2.19.1.4_ubuntu20.04_arm64.brc .tf_configure.bazelrc
 RUN --mount=type=cache,target=/root/.cache/bazel,id=bazel-cache-r2.19.1.4-ubuntu20.04 \
     bazel build //tensorflow/tools/pip_package:wheel --repo_env=WHEEL_NAME=tensorflow --config=cuda --config=cuda_wheel \
         --copt=-Wno-gnu-offsetof-extensions --copt=-Wno-error --copt=-Wno-c23-extensions --verbose_failures \
-        --copt=-Wno-macro-redefined
+        --copt=-Wno-macro-redefined \
+        --linkopt=--rtlib=compiler-rt \
+        --host_linkopt=--rtlib=compiler-rt
 
 # Export the wheels
 RUN --mount=type=cache,target=/root/.cache/bazel,id=bazel-cache-r2.19.1.4-ubuntu20.04 \

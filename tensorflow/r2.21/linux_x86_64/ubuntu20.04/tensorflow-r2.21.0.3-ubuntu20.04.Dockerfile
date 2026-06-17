@@ -27,7 +27,9 @@ ENV HERMETIC_PYTHON_VERSION=3.12
 RUN --mount=type=cache,target=/root/.cache/bazel,id=bazel-cache-r2.21.0.3-ubuntu20.04 \
     bazel build //tensorflow/tools/pip_package:wheel --repo_env=WHEEL_NAME=tensorflow --config=cuda --config=cuda_wheel \
         --copt=-Wno-gnu-offsetof-extensions --copt=-Wno-error --copt=-Wno-c23-extensions --verbose_failures \
-        --copt=-Wno-macro-redefined --features=-layering_check --features=-use_header_modules --copt=-DBORINGSSL_PREFIX=TF
+        --copt=-Wno-macro-redefined --features=-layering_check --features=-use_header_modules --copt=-DBORINGSSL_PREFIX=TF \
+        --linkopt=--rtlib=compiler-rt \
+        --host_linkopt=--rtlib=compiler-rt
 
 # Export the wheels
 RUN --mount=type=cache,target=/root/.cache/bazel,id=bazel-cache-r2.21.0.3-ubuntu20.04 \
