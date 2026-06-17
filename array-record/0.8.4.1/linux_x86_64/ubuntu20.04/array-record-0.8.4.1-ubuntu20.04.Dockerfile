@@ -89,6 +89,8 @@ WORKDIR /workspace/build
 RUN pip install auditwheel && \
     python3 setup.py bdist_wheel --python-tag py312 && \
     auditwheel repair --plat manylinux_2_31_x86_64 -w repaired_dist dist/*.whl && \
+    uv pip install -f https://storage.googleapis.com/axlearn-wheels/wheels.html tensorflow==2.21.0.3 repaired_dist/*.whl && \
+    python3 -c 'import tensorflow as tf; from array_record.python import array_record_module; print("SUCCESS: array_record imported alongside tensorflow!")' && \
     mkdir -p /mnt/export && cp repaired_dist/*.whl /mnt/export/
 
 FROM scratch AS array-record
