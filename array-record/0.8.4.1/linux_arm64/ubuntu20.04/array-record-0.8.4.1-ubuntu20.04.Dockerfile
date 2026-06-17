@@ -91,7 +91,7 @@ EOF
 
 # Build the wheel
 WORKDIR /workspace/build
-RUN pip install auditwheel && \
+RUN uv pip install patchelf auditwheel && \
     python3 setup.py bdist_wheel --python-tag py312 && \
     auditwheel repair --plat manylinux_2_31_aarch64 -w repaired_dist dist/*.whl && \
     uv pip install -f https://storage.googleapis.com/axlearn-wheels/wheels.html tensorflow==2.21.0.3 repaired_dist/*.whl && \
