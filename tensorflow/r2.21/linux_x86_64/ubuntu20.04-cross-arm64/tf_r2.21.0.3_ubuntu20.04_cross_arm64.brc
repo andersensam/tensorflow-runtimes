@@ -27,6 +27,7 @@ build --copt=-DHWY_DISABLED_TARGETS=511
 build --host_copt=-DHWY_DISABLED_TARGETS=511
 build --cpu=aarch64
 build --crosstool_top=//tensorflow/tools/toolchains/cross_compile/cc:cross_compile_toolchain_suite
+build --platforms=//tensorflow/tools/toolchains/cross_compile/config:linux_aarch64
 test --test_size_filters=small,medium
 test --test_env=LD_LIBRARY_PATH
 test:v1 --test_tag_filters=-benchmark-test,-no_oss,-oss_excluded,-no_gpu,-oss_serial
