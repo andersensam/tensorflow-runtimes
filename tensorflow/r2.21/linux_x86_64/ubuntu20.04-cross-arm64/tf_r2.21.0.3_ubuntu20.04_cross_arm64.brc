@@ -25,8 +25,8 @@ build:opt --copt=-Wno-sign-compare
 build:opt --host_copt=-Wno-sign-compare
 build --copt=-DHWY_DISABLED_TARGETS=511
 build --host_copt=-DHWY_DISABLED_TARGETS=511
-build --copt=--cuda-path=external/local_config_cuda/cuda
-build --host_copt=--cuda-path=external/local_config_cuda/cuda
+build --copt=--cuda-path=/usr/local/cuda
+build --host_copt=--cuda-path=/usr/local/cuda
 build --cpu=aarch64
 build --crosstool_top=//tensorflow/tools/toolchains/cross_compile/cc:cross_compile_toolchain_suite
 build --platforms=//tensorflow/tools/toolchains/cross_compile/config:linux_aarch64
