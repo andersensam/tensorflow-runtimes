@@ -18,7 +18,7 @@ RUN git clone --depth 1 https://github.com/andersensam/tensorflow-io && \
     pip install --upgrade pip && pip install uv && pip cache purge && \
     uv pip install tensorflow==2.19.1 setuptools && \
     uv pip uninstall tensorflow && \
-    uv pip install --no-deps --no-index https://storage.googleapis.com/axlearn-wheels/tensorflow/tensorflow-2.19.1.3-cp312-cp312-manylinux_2_31_aarch64.whl && \
+    uv pip install --no-deps --no-index https://github.com/andersensam/tensorflow/releases/download/2.19.1.3/tensorflow-2.19.1.3-cp312-cp312-linux_aarch64.whl && \
     uv cache clean
 
 WORKDIR /workspace/tensorflow-io

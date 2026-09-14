@@ -9,7 +9,7 @@ source build/.venv/bin/activate
 pip install --upgrade pip uv
 
 # Fetch the bazel binary
-curl -o build/bazel https://storage.googleapis.com/axlearn-wheels/bazelisk/v1.29.0/bazelisk-darwin-arm64
+curl -o build/bazel https://github.com/bazelbuild/bazelisk/releases/download/v1.29.0/bazelisk-darwin-arm64
 chmod +x build/bazel
 
 # Clone TensorFlow

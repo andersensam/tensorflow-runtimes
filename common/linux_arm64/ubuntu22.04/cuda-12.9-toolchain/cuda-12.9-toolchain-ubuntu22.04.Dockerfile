@@ -21,7 +21,7 @@ RUN --mount=type=cache,id=apt-ubuntu22.04-arm64,target=/var/cache/apt,sharing=lo
     --mount=type=cache,id=apt-lists-ubuntu22.04-arm64,target=/var/lib/apt/lists,sharing=locked \
     apt-get update && \
     apt-get install -y curl xz-utils && \
-    curl -o LLVM-22.1.7.tar.xz https://storage.googleapis.com/axlearn-wheels/llvm/LLVM-22.1.7-Linux-ARM64.tar.xz && \
+    curl -o LLVM-22.1.7.tar.xz https://github.com/llvm/llvm-project/releases/download/llvmorg-22.1.7/LLVM-22.1.7-Linux-ARM64.tar.xz && \
     tar -xvf LLVM-22.1.7.tar.xz && \
     mkdir -p /opt/llvm && \
     mv LLVM-22.1.7-Linux-ARM64/* /opt/llvm/ && \
@@ -51,7 +51,7 @@ RUN /opt/venv/bin/python3.12 -m pip install --upgrade pip uv && \
     uv cache clean
 
 # Install Bazelisk (Bazel wrapper)
-RUN curl -o /usr/local/bin/bazel https://storage.googleapis.com/axlearn-wheels/bazelisk/v1.29.0/bazelisk-linux-arm64 && \
+RUN curl -o /usr/local/bin/bazel https://github.com/bazelbuild/bazelisk/releases/download/v1.29.0/bazelisk-linux-arm64 && \
     chmod +x /usr/local/bin/bazel && \
     /usr/local/bin/bazel version
 

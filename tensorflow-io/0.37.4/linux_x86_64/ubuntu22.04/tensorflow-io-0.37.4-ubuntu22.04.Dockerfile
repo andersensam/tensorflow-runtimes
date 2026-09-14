@@ -19,7 +19,7 @@ RUN git clone --depth 1 --branch tensorflow_r2.21.0.1 https://github.com/anderse
     pip install --upgrade pip uv && pip cache purge && \
     uv pip install tensorflow==2.21.0 setuptools wheel && \
     uv pip uninstall tensorflow && \
-    uv pip install --no-deps --no-index https://storage.googleapis.com/axlearn-wheels/tensorflow/tensorflow-2.21.0.1-cp312-cp312-manylinux_2_35_x86_64.whl  && \
+    uv pip install --no-deps --no-index https://github.com/andersensam/tensorflow/releases/download/2.21.0.3/tensorflow-2.21.0.3-cp312-cp312-manylinux_2_35_x86_64.whl  && \
     uv cache clean && \
     ln -s /usr/include/tirpc /workspace/tensorflow-io/third_party/tirpc
 
