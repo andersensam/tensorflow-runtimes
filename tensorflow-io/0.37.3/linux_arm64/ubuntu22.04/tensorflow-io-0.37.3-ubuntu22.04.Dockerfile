@@ -13,12 +13,12 @@ WORKDIR /workspace
 # Enable busting the cache and forcing a git refresh and new bazel build
 ARG GIT_BUILD_NUMBER 0
 
-# Clone TensorFlow I/O and install the Ubuntu 22.04 wheel for TensorFlow 2.19.1.3 (after resolving deps with regular 2.19.1)
+# Clone TensorFlow I/O and install the Ubuntu 22.04 wheel for TensorFlow 2.19.1.4 (after resolving deps with regular 2.19.1)
 RUN git clone --depth 1 https://github.com/andersensam/tensorflow-io && \
     pip install --upgrade pip && pip install uv && pip cache purge && \
     uv pip install tensorflow==2.19.1 setuptools && \
     uv pip uninstall tensorflow && \
-    uv pip install --no-deps --no-index https://github.com/andersensam/tensorflow/releases/download/2.19.1.3/tensorflow-2.19.1.3-cp312-cp312-linux_aarch64.whl && \
+    uv pip install --no-deps --no-index https://github.com/andersensam/tensorflow/releases/download/2.19.1.4/tensorflow-2.19.1.4-cp312-cp312-manylinux_2_35_aarch64.whl && \
     uv cache clean
 
 WORKDIR /workspace/tensorflow-io
